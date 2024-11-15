@@ -1,0 +1,9 @@
+export const userRouter = Router();
+
+userRouter.post("/metadata", async (req, res) => {});
+
+
+userRouter.post("/metadata", async (req, res) => {});
+
+
+userRouter.post("/metadata/bulk", async (req, res) => {});
