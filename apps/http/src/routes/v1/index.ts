@@ -1,20 +1,20 @@
-import {Router} from "express";
-import {userRouter} from "./user";
-import {spaceRouter} from "./space";
-import {adminRouter} from "./admin";
+import { Router } from "express";
+import { userRouter } from "./user";
+import { spaceRouter } from "./space";
+import { adminRouter } from "./admin";
 
 export const router = Router();
 
 router.get("/signup", (req, res) => {
-	res.json({
-		message: "Signup",
-	});
+    res.json({
+        message: "Signup",
+    });
 });
 
 router.get("/signin", (req, res) => {
-	res.json({
-		message: "Signin",
-	});
+    res.json({
+        message: "Signin",
+    });
 });
 
 router.get("/elements", (req, res) => {});

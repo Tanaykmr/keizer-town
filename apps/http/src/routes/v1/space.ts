@@ -1,4 +1,4 @@
-import {Router} from "express";
+import { Router } from "express";
 
 export const spaceRouter = Router();
 
@@ -8,10 +8,6 @@ spaceRouter.delete("/:spaceID", async (req, res) => {});
 
 spaceRouter.get("/all", async (req, res) => {});
 
-
-
 spaceRouter.get("/:spaceId", async (req, res) => {});
 
 spaceRouter.delete("/element", async (req, res) => {});
-
-
