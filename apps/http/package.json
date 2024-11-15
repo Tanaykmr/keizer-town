@@ -2,14 +2,15 @@
 	"name": "http",
 	"version": "1.0.0",
 	"main": "dist/index.js",
-	"license": "MIT",
+	"licenser": "MIT",
 	"scripts": {
 		"build": "tsc -b",
 		"start": "node dist/index.js",
 		"dev": "yarn build && yarn start"
 	},
 	"dependencies": {
-		"express": "^4.21.1"
+		"express": "^4.21.1",
+		"@repo/db": "*"
 	},
 	"devDependencies": {
 		"@types/express": "^5.0.0"
