@@ -26,10 +26,9 @@ router.get("/signup", async (req, res) => {
             },
         });
 
-            res.json({userId: user.id})
-
+        res.json({ userId: user.id });
     } catch (e) {
-        console.log("unable to create user: ", e)
+        console.log("unable to create user: ", e);
         res.status(400).json({ message: "User already exists" });
     }
 });
