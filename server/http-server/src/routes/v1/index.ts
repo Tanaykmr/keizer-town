@@ -2,14 +2,14 @@ import {Router} from "express";
 import {userRouter} from "./user";
 import {spaceRouter} from "./space";
 import {adminRouter} from "./admin";
-import {SigninSchema, SignupSchema} from "../../types";
+import {SigninSchema, SignupSchema} from "../../types/types";
 import prisma from "../../db/prisma";
 import jwt from "jsonwebtoken";
 import dotenv from "dotenv";
 
 dotenv.config();
 
-const JWT_SECRET = process.env.JWT_SECRET || "";
+const JWT_SECRET = process.env.ADMIN_JWT_SECRET || "";
 console.log("the jwt secret is: ", JWT_SECRET);
 // TODO: hash passwords
 //     "userId": "cm3lpyg5s0000zebernbmyz7b"
