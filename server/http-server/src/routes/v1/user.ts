@@ -1,35 +1,53 @@
-import { Request, Response, Router } from "express";
+import {Router} from "express";
 import prisma from "../../db/prisma";
-import { adminMiddleware } from "../../middleware/admin";
+import {userMiddleware} from "../../middleware/user";
+import {UpdateMetadataSchema} from "../../types/types";
 
 export const userRouter = Router();
 
-userRouter.post("/metadata", adminMiddleware, async (req: Request, res: Response) => {
-	const avatarId = req.body.avatarId;
-
-	if (!avatarId) {
-		res.status(400).json({message: "Avatar ID is required"});
+userRouter.post("/metadata", userMiddleware, async (req, res) => {
+	const parsedData = UpdateMetadataSchema.safeParse(req.body);
+	if (!parsedData.success) {
+		console.log("parsed data incorrect");
+		res.status(400).json({message: "Validation failed"});
+		return;
 	}
-
 	try {
 		await prisma.user.update({
 			where: {
 				id: req.userId,
 			},
 			data: {
-				avatarId,
+				avatarId: parsedData.data.avatarId,
 			},
 		});
-
-		res.json({success: true});
-	} catch (error) {
-		console.error("Error updating user metadata:", error);
-		res.status(400).json({message: "Failed to update user metadata"});
+		res.json({message: "Metadata updated"});
+	} catch (e) {
+		console.log("error");
+		res.status(400).json({message: "Internal server error"});
 	}
 });
 
-userRouter.post("/metadata", async (req, res) => {
-	res.status(501).json({message: "Not implemented"});
-});
+userRouter.get("/metadata/bulk", async (req, res) => {
+	const userIdString = (req.query.ids ?? "[]") as string;
+	const userIds = userIdString.slice(1, userIdString?.length - 1).split(",");
+	console.log("userIds are: ", userIds);
+	const metadata = await prisma.user.findMany({
+		where: {
+			id: {
+				in: userIds,
+			},
+		},
+		select: {
+			avatar: true,
+			id: true,
+		},
+	});
 
-userRouter.post("/metadata/bulk", async (req, res) => {});
+	res.json({
+		avatars: metadata.map((m) => ({
+			userId: m.id,
+			avatarId: m.avatar?.imageUrl,
+		})),
+	});
+});
