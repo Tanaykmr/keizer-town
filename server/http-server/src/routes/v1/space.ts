@@ -1,11 +1,11 @@
-import {Router} from "express";
+import {Request, Router} from "express";
 import prisma from "../../db/prisma";
-import {userMiddleware} from "../../middleware/user";
+import {authMiddleware} from "../../middleware/authMiddleware";
 import {AddElementSchema, CreateSpaceSchema, DeleteElementSchema} from "../../types/types";
 export const spaceRouter = Router();
 
-spaceRouter.post("/", userMiddleware, async (req, res) => {
-	console.log("endopibnt");
+spaceRouter.post("/", authMiddleware, async (req: Request, res) => {
+	console.log("endpoint");
 	const parsedData = CreateSpaceSchema.safeParse(req.body);
 	if (!parsedData.success) {
 		console.log(JSON.stringify(parsedData));
@@ -68,7 +68,7 @@ spaceRouter.post("/", userMiddleware, async (req, res) => {
 	res.json({spaceId: space.id});
 });
 
-spaceRouter.delete("/element", userMiddleware, async (req, res) => {
+spaceRouter.delete("/element", authMiddleware, async (req, res) => {
 	console.log("spaceElement?.space1 ");
 	const parsedData = DeleteElementSchema.safeParse(req.body);
 	if (!parsedData.success) {
@@ -97,7 +97,7 @@ spaceRouter.delete("/element", userMiddleware, async (req, res) => {
 	res.json({message: "Element deleted"});
 });
 
-spaceRouter.delete("/:spaceId", userMiddleware, async (req, res) => {
+spaceRouter.delete("/:spaceId", authMiddleware, async (req, res) => {
 	console.log("req.params.spaceId", req.params.spaceId);
 	const space = await prisma.space.findUnique({
 		where: {
@@ -126,10 +126,10 @@ spaceRouter.delete("/:spaceId", userMiddleware, async (req, res) => {
 	res.json({message: "Space deleted"});
 });
 
-spaceRouter.get("/all", userMiddleware, async (req, res) => {
+spaceRouter.get("/all", authMiddleware, async (req, res) => {
 	const spaces = await prisma.space.findMany({
 		where: {
-			creatorId: req.userId!,
+			creatorId: req.userId,
 		},
 	});
 
@@ -143,7 +143,7 @@ spaceRouter.get("/all", userMiddleware, async (req, res) => {
 	});
 });
 
-spaceRouter.post("/element", userMiddleware, async (req, res) => {
+spaceRouter.post("/element", authMiddleware, async (req, res) => {
 	const parsedData = AddElementSchema.safeParse(req.body);
 	if (!parsedData.success) {
 		res.status(400).json({message: "Validation failed"});

@@ -10,6 +10,7 @@ import dotenv from "dotenv";
 dotenv.config();
 
 const JWT_SECRET = process.env.ADMIN_JWT_SECRET || "";
+const USER_JWT_SECRET = process.env.USER_JWT_SECRET || "";
 console.log("the jwt secret is: ", JWT_SECRET);
 // TODO: hash passwords
 //     "userId": "cm3lpyg5s0000zebernbmyz7b"
@@ -20,7 +21,7 @@ router.post("/signup", async (req, res) => {
 	const parsedData = SignupSchema.safeParse(req.body);
 	if (!parsedData.success) {
 		res.status(400).json({
-			message: "Message validation failed",
+			message: "Sign up message validation failed",
 			errors: parsedData.error.errors,
 		});
 		return;
@@ -46,7 +47,7 @@ router.post("/signin", async (req, res) => {
 	const parsedData = SigninSchema.safeParse(req.body);
 	if (!parsedData.success) {
 		res.status(400).json({
-			message: "Message validation failed",
+			message: "Sign in message validation failed",
 			errors: parsedData.error.errors,
 		});
 		return;
@@ -75,7 +76,7 @@ router.post("/signin", async (req, res) => {
 				userId: existingUser.id,
 				role: existingUser.role,
 			},
-			JWT_SECRET,
+			(existingUser.role === "Admin") ? JWT_SECRET : USER_JWT_SECRET,
 		);
 
 		res.json({

@@ -1,11 +1,11 @@
-import {Router} from "express";
+import { Router } from "express";
 import prisma from "../../db/prisma";
-import {userMiddleware} from "../../middleware/user";
-import {UpdateMetadataSchema} from "../../types/types";
+import { authMiddleware } from "../../middleware/authMiddleware";
+import { UpdateMetadataSchema } from "../../types/types";
 
 export const userRouter = Router();
 
-userRouter.post("/metadata", userMiddleware, async (req, res) => {
+userRouter.post("/metadata", authMiddleware, async (req, res) => {
 	const parsedData = UpdateMetadataSchema.safeParse(req.body);
 	if (!parsedData.success) {
 		console.log("parsed data incorrect");
@@ -23,8 +23,7 @@ userRouter.post("/metadata", userMiddleware, async (req, res) => {
 		});
 		res.json({message: "Metadata updated"});
 	} catch (e) {
-		console.log("error");
-		res.status(400).json({message: "Internal server error"});
+		res.status(400).json({message: "Incorrect avatar ID"});
 	}
 });
 
