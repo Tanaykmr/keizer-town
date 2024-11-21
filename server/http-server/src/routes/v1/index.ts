@@ -9,11 +9,9 @@ import dotenv from "dotenv";
 
 dotenv.config();
 
-const JWT_SECRET = process.env.ADMIN_JWT_SECRET || "";
+const ADMIN_JWT_SECRET = process.env.ADMIN_JWT_SECRET || "";
 const USER_JWT_SECRET = process.env.USER_JWT_SECRET || "";
-console.log("the jwt secret is: ", JWT_SECRET);
 // TODO: hash passwords
-//     "userId": "cm3lpyg5s0000zebernbmyz7b"
 
 export const router = Router();
 
@@ -76,7 +74,7 @@ router.post("/signin", async (req, res) => {
 				userId: existingUser.id,
 				role: existingUser.role,
 			},
-			(existingUser.role === "Admin") ? JWT_SECRET : USER_JWT_SECRET,
+			(existingUser.role === "Admin") ? ADMIN_JWT_SECRET : USER_JWT_SECRET,
 		);
 
 		res.json({

@@ -5,7 +5,7 @@ import {AddElementSchema, CreateSpaceSchema, DeleteElementSchema} from "../../ty
 export const spaceRouter = Router();
 
 spaceRouter.post("/", authMiddleware, async (req: Request, res) => {
-	console.log("endpoint");
+	// console.log("endpoint");
 	const parsedData = CreateSpaceSchema.safeParse(req.body);
 	if (!parsedData.success) {
 		console.log(JSON.stringify(parsedData));
@@ -64,7 +64,7 @@ spaceRouter.post("/", authMiddleware, async (req: Request, res) => {
 
 		return space;
 	});
-	console.log("space crated");
+	console.log("space created");
 	res.json({spaceId: space.id});
 });
 
@@ -98,7 +98,7 @@ spaceRouter.delete("/element", authMiddleware, async (req, res) => {
 });
 
 spaceRouter.delete("/:spaceId", authMiddleware, async (req, res) => {
-	console.log("req.params.spaceId", req.params.spaceId);
+	// console.log("req.params.spaceId", req.params.spaceId);
 	const space = await prisma.space.findUnique({
 		where: {
 			id: req.params.spaceId,

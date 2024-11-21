@@ -3,8 +3,8 @@ import {NextFunction, Request, Response} from "express";
 import jwt from "jsonwebtoken";
 dotenv.config();
 
-const JWT_SECRET = process.env.ADMIN_JWT_SECRET || "";
-console.log("the jwt secret is: ", JWT_SECRET);
+const ADMIN_JWT_SECRET = process.env.ADMIN_JWT_SECRET || "";
+console.log("the admin jwt secret is: ", ADMIN_JWT_SECRET);
 
 export const adminMiddleware = (req: Request, res: Response, next: NextFunction) => {
 	const header = req.headers["authorization"];
@@ -16,7 +16,7 @@ export const adminMiddleware = (req: Request, res: Response, next: NextFunction)
 	}
 
 	try {
-		const decoded = jwt.verify(token, JWT_SECRET) as {role: string; userId: string};
+		const decoded = jwt.verify(token, ADMIN_JWT_SECRET) as {role: string; userId: string};
 		if (decoded.role !== "Admin") {
 			res.status(403).json({message: "Unauthorized, only admins allowed"});
 			return;
@@ -24,7 +24,7 @@ export const adminMiddleware = (req: Request, res: Response, next: NextFunction)
 		req.userId = decoded.userId;
 		next();
 	} catch (e) {
-		res.status(401).json({message: "Unauthorized"});
+		res.status(403).json({message: "Unauthorized"});
 		return;
 	}
 };
