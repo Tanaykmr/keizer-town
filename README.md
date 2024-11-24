@@ -9,14 +9,14 @@ yarn
 ```
 
 2. add a `.env` according to the `.env.example`
-
-3. add db URL and generate the prisma client
+3. Run your postgres instance on docker
+4. add db URL and generate the prisma client
 ```js
 cd http-server/src/db/prisma
 // add the DB URL as the environment variable here
 npx prisma migrate dev
 ```
-4. Build the entire code
+5. Build the entire code
 ```js
 // return to /server
 yarn build
